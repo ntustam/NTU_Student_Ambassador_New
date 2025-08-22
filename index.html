@@ -4,7 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>臺灣大學國際禮賓學生計畫 - 禮賓學生專區</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 基本樣式設定 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        /* 固定標題區域樣式 */
+        .subpage-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: #8a2a2b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        /* 標誌樣式 */
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        /* 子頁面樣式 */
+        .subpage {
+            margin-top: 120px; /* 給 header 留空間 */
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #fff;
+            min-height: calc(100vh - 220px); /* 確保有足夠高度 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* 大標題樣式 */
+        .subpage h2 {
+            font-size: 3rem;
+            color: #00274d;
+            margin: 0 0 20px 0;
+        }
+
+        /* 分隔線樣式 */
+        .divider {
+            height: 3px;
+            width: 200px;
+            background-color: #00274d;
+            margin: 0 auto 40px auto;
+        }
+
+        /* 段落樣式 */
+        .subpage p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+            margin: 20px 0;
+            max-width: 600px;
+        }
+
+        /* 表單樣式 */
+        .subpage form {
+            margin: 30px 0;
+        }
+
+        .subpage input {
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            margin: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 250px;
+        }
+
+        .subpage button {
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            margin: 10px;
+            background: #8a2a2b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .subpage button:hover {
+            background: #6a1a1b;
+        }
+
+        /* 頁尾樣式 */
+        .footer {
+            background: #161F28;
+            color: white;
+            padding: 30px 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a img {
+            width: 35px;
+            height: 35px;
+            transition: opacity 0.3s;
+        }
+
+        .social-icons a img:hover {
+            opacity: 0.7;
+        }
+
+        /* 手機版樣式 */
+        @media (max-width: 768px) {
+            .subpage h2 {
+                font-size: 2rem;
+            }
+            
+            .subpage p {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+            
+            .subpage input {
+                width: 200px;
+                font-size: 1rem;
+            }
+            
+            .divider {
+                width: 150px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- 固定標題區域 -->
@@ -17,10 +186,11 @@
     <!-- 學生專區內容 -->
     <div class="subpage">
         <h2>禮賓學生專區</h2>
-        <div class="divider"></div> <!-- 分隔線 -->
+        <div class="divider"></div>
         <p>請輸入您的電話號碼後三碼以進入任務點數統計表：</p>
         <form id="student-form" onsubmit="return redirectToGoogleSheet()">
-            <input type="text" id="student-id" placeholder="輸入電話號碼後三碼" required>
+            <input type="text" id="student-id" placeholder="輸入電話號碼後三碼" required maxlength="4">
+            <br>
             <button type="submit">確認</button>
         </form>
         <p>*如有問題，請洽詢幹部 
@@ -51,25 +221,34 @@
         
         // 讀取 CSV 並填充到 studentLinks
         async function loadCSV() {
-            const response = await fetch('student_links.csv'); // 確保 student_links.csv 在同一目錄中
-            const csvText = await response.text();
-            const rows = csvText.split('\n');
-            
-            for (const row of rows) {
-                const [studentId, link] = row.split(','); // 逗號分隔
-                if (studentId && link) {
-                    studentLinks[studentId.trim()] = link.trim();
+            try {
+                const response = await fetch('student_links.csv');
+                const csvText = await response.text();
+                const rows = csvText.split('\n');
+                
+                for (const row of rows) {
+                    const [studentId, link] = row.split(',');
+                    if (studentId && link) {
+                        studentLinks[studentId.trim()] = link.trim();
+                    }
                 }
+                
+                console.log("Loaded studentLinks:", studentLinks);
+            } catch (error) {
+                console.error("Error loading CSV:", error);
+                alert("載入學生資料時發生錯誤，請稍後再試");
             }
-            
-            // 在這裡檢查 studentLinks 的內容
-            console.log("Loaded studentLinks:", studentLinks);
         }
         
         // 跳轉到相應的 Google 試算表
         async function redirectToGoogleSheet() {
             const studentId = document.getElementById("student-id").value.trim();
-            // 檢查學號是否存在
+            
+            if (!studentId) {
+                alert("請輸入電話號碼後三碼");
+                return false;
+            }
+            
             if (studentId in studentLinks) {
                 const googleSheetURL = studentLinks[studentId];
                 alert("即將進入專區");
@@ -77,11 +256,11 @@
             } else {
                 alert("找不到該電話號碼的連結，請確認是否正確輸入！");
             }
-            return false; // 防止表單提交後重新載入頁面
+            return false;
         }
         
         // 初始化 CSV 加載
-        loadCSV();
+        window.addEventListener('load', loadCSV);
     </script>
 </body>
 </html>
