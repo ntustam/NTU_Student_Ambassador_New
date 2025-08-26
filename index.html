@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>臺灣大學國際禮賓學生計畫 - 禮賓學生專區</title>
+    <title>臺灣大學國際禮賓學生計畫 - 禮賓學生專區 | NTU Student Ambassador Program</title>
     <style>
         /* 基本樣式設定 */
         body {
@@ -24,7 +24,7 @@
             color: white;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
             padding: 0 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 1000;
@@ -43,13 +43,40 @@
             margin-right: 10px;
         }
 
+        /* 語言切換按鈕 */
+        .language-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: #8a2a2b;
+            font-weight: bold;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
         /* 子頁面樣式 */
         .subpage {
-            margin-top: 120px; /* 給 header 留空間 */
+            margin-top: 120px;
             padding: 40px 20px;
             text-align: center;
             background-color: #fff;
-            min-height: calc(100vh - 220px); /* 確保有足夠高度 */
+            min-height: calc(100vh - 220px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -57,10 +84,18 @@
         }
 
         /* 大標題樣式 */
-        .subpage h2 {
+        .main-title {
             font-size: 3rem;
             color: #00274d;
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .main-title-en {
+            font-size: 2rem;
+            color: #666;
             margin: 0 0 20px 0;
+            font-style: italic;
         }
 
         /* 分隔線樣式 */
@@ -72,7 +107,7 @@
         }
 
         /* 段落樣式 */
-        .subpage p {
+        .instruction-text {
             font-size: 1.2rem;
             line-height: 1.6;
             color: #333;
@@ -80,9 +115,37 @@
             max-width: 600px;
         }
 
+        .instruction-text-en {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 10px 0 30px 0;
+            max-width: 600px;
+            font-style: italic;
+        }
+
         /* 表單樣式 */
         .subpage form {
             margin: 30px 0;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-label-en {
+            display: block;
+            margin-bottom: 15px;
+            color: #666;
+            font-style: italic;
+            font-size: 0.9rem;
         }
 
         .subpage input {
@@ -92,6 +155,7 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             width: 250px;
+            text-align: center;
         }
 
         .subpage button {
@@ -104,10 +168,32 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
+            position: relative;
         }
 
         .subpage button:hover {
             background: #6a1a1b;
+        }
+
+        .button-text-en {
+            display: block;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        /* 聯絡資訊樣式 */
+        .contact-note {
+            margin: 30px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .contact-note-en {
+            font-size: 0.9rem;
+            color: #777;
+            font-style: italic;
+            margin-top: 10px;
         }
 
         /* 頁尾樣式 */
@@ -127,9 +213,19 @@
             margin: 0 auto;
         }
 
+        .contact-info {
+            flex: 1;
+        }
+
         .contact-info p {
             margin: 5px 0;
             font-size: 0.9rem;
+        }
+
+        .contact-info .en-text {
+            font-size: 0.8rem;
+            color: #ccc;
+            font-style: italic;
         }
 
         .social-icons {
@@ -147,13 +243,38 @@
             opacity: 0.7;
         }
 
+        /* 語言隱藏功能 */
+        .lang-zh, .lang-en {
+            transition: opacity 0.3s ease;
+        }
+
+        body.en-mode .lang-zh {
+            display: none;
+        }
+
+        body.en-mode .lang-en {
+            display: block;
+        }
+
+        body:not(.en-mode) .lang-en {
+            display: none;
+        }
+
+        body:not(.en-mode) .lang-zh {
+            display: block;
+        }
+
         /* 手機版樣式 */
         @media (max-width: 768px) {
-            .subpage h2 {
+            .main-title {
                 font-size: 2rem;
             }
             
-            .subpage p {
+            .main-title-en {
+                font-size: 1.5rem;
+            }
+            
+            .instruction-text {
                 font-size: 1rem;
                 padding: 0 20px;
             }
@@ -172,6 +293,16 @@
                 text-align: center;
                 gap: 20px;
             }
+
+            .language-toggle {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -181,31 +312,84 @@
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="Logo" class="logo">
         </a>
+        <div class="language-toggle">
+            <button class="lang-btn active" onclick="setLanguage('zh')">中文</button>
+            <button class="lang-btn" onclick="setLanguage('en')">English</button>
+        </div>
     </header>
 
     <!-- 學生專區內容 -->
     <div class="subpage">
-        <h2>禮賓學生專區</h2>
+        <!-- 中文版標題 -->
+        <h1 class="main-title lang-zh">禮賓學生專區</h1>
+        <h2 class="main-title-en lang-zh">Student Ambassador Portal</h2>
+        
+        <!-- 英文版標題 -->
+        <h1 class="main-title lang-en">Student Ambassador Portal</h1>
+        <h2 class="main-title-en lang-en">禮賓學生專區</h2>
+        
         <div class="divider"></div>
-        <p>請輸入您的電話號碼後三碼以進入任務點數統計表：</p>
+        
+        <!-- 說明文字 -->
+        <p class="instruction-text lang-zh">請輸入您的電話號碼後三碼以進入任務點數統計表：</p>
+        <p class="instruction-text-en lang-zh">Please enter the last 3 digits of your phone number to access your mission points record:</p>
+        
+        <p class="instruction-text lang-en">Please enter the last 3 digits of your phone number to access your mission points record:</p>
+        <p class="instruction-text-en lang-en">請輸入您的電話號碼後三碼以進入任務點數統計表：</p>
+        
+        <!-- 表單 -->
         <form id="student-form" onsubmit="return redirectToGoogleSheet()">
-            <input type="text" id="student-id" placeholder="輸入電話號碼後三碼" required maxlength="4">
-            <br>
-            <button type="submit">確認</button>
+            <div class="input-group">
+                <input type="text" id="student-id" maxlength="4" required>
+                <div class="lang-zh">
+                    <small style="color: #666;">輸入電話號碼後三碼 | Enter last 3 digits</small>
+                </div>
+                <div class="lang-en">
+                    <small style="color: #666;">Enter last 3 digits | 輸入電話號碼後三碼</small>
+                </div>
+            </div>
+            
+            <button type="submit">
+                <span class="lang-zh">確認</span>
+                <span class="lang-en">Confirm</span>
+                <div class="button-text-en lang-zh">Confirm</div>
+                <div class="button-text-en lang-en">確認</div>
+            </button>
         </form>
-        <p>*如有問題，請洽詢幹部 
-            <a href="https://www.instagram.com/haoru_08?igsh=MXJlNXF4b3pzMnVhYw%3D%3D&utm_source=qr" style="color: #0078d7; text-decoration: underline;">
-                Hao張耘皓
-            </a>*
-        </p>
+        
+        <!-- 聯絡資訊 -->
+        <div class="contact-note">
+            <p class="lang-zh">*如有問題，請洽詢幹部 
+                <a href="https://www.instagram.com/haoru_08?igsh=MXJlNXF4b3pzMnVhYw%3D%3D&utm_source=qr" style="color: #0078d7; text-decoration: underline;">
+                    Hao 張耘皓
+                </a>*
+            </p>
+            <p class="contact-note-en lang-zh">*For questions, please contact our coordinator Hao 張耘皓*</p>
+            
+            <p class="lang-en">*For questions, please contact our coordinator 
+                <a href="https://www.instagram.com/haoru_08?igsh=MXJlNXF4b3pzMnVhYw%3D%3D&utm_source=qr" style="color: #0078d7; text-decoration: underline;">
+                    Hao 張耘皓
+                </a>*
+            </p>
+            <p class="contact-note-en lang-en">*如有問題，請洽詢幹部 Hao 張耘皓*</p>
+        </div>
     </div>
 
     <!-- 社群媒體與聯絡方式 -->
     <footer class="footer">
         <div class="footer-content">
             <div class="contact-info">
-                <p>地址：106319 臺北市大安區羅斯福路四段1號 禮賢樓7樓</p>
-                <p>電話：+886-2-3366-2007, +886-2-2362-6801</p>
+                <p class="lang-zh">地址：106319 臺北市大安區羅斯福路四段1號 禮賢樓7樓</p>
+                <p class="en-text lang-zh">Address: 7F, Li-Hsien Building, No.1, Sec.4, Roosevelt Rd., Da-an Dist., Taipei City 106319</p>
+                
+                <p class="lang-en">Address: 7F, Li-Hsien Building, No.1, Sec.4, Roosevelt Rd., Da-an Dist., Taipei City 106319</p>
+                <p class="en-text lang-en">地址：106319 臺北市大安區羅斯福路四段1號 禮賢樓7樓</p>
+                
+                <p class="lang-zh">電話：+886-2-3366-2007, +886-2-2362-6801</p>
+                <p class="en-text lang-zh">Phone: +886-2-3366-2007, +886-2-2362-6801</p>
+                
+                <p class="lang-en">Phone: +886-2-3366-2007, +886-2-2362-6801</p>
+                <p class="en-text lang-en">電話：+886-2-3366-2007, +886-2-2362-6801</p>
             </div>
             <div class="social-icons">
                 <a href="https://www.facebook.com/NTUOIASA" target="_blank"><img src="fb-icon.png" alt="Facebook"></a>
@@ -218,6 +402,33 @@
 
     <script>
         const studentLinks = {};
+        
+        // 語言設定
+        function setLanguage(lang) {
+            const body = document.body;
+            const langButtons = document.querySelectorAll('.lang-btn');
+            
+            // 更新 body class
+            if (lang === 'en') {
+                body.classList.add('en-mode');
+            } else {
+                body.classList.remove('en-mode');
+            }
+            
+            // 更新按鈕狀態
+            langButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (lang === 'en') {
+                langButtons[1].classList.add('active');
+            } else {
+                langButtons[0].classList.add('active');
+            }
+            
+            // 儲存語言偏好
+            localStorage.setItem('preferred-language', lang);
+        }
         
         // 讀取 CSV 並填充到 studentLinks
         async function loadCSV() {
@@ -236,31 +447,54 @@
                 console.log("Loaded studentLinks:", studentLinks);
             } catch (error) {
                 console.error("Error loading CSV:", error);
-                alert("載入學生資料時發生錯誤，請稍後再試");
+                const isEnglish = document.body.classList.contains('en-mode');
+                const message = isEnglish 
+                    ? "Error loading student data. Please try again later." 
+                    : "載入學生資料時發生錯誤，請稍後再試";
+                alert(message);
             }
         }
         
         // 跳轉到相應的 Google 試算表
         async function redirectToGoogleSheet() {
             const studentId = document.getElementById("student-id").value.trim();
+            const isEnglish = document.body.classList.contains('en-mode');
             
             if (!studentId) {
-                alert("請輸入電話號碼後三碼");
+                const message = isEnglish 
+                    ? "Please enter the last 3 digits of your phone number" 
+                    : "請輸入電話號碼後三碼";
+                alert(message);
                 return false;
             }
             
             if (studentId in studentLinks) {
                 const googleSheetURL = studentLinks[studentId];
-                alert("將進入個人點數試算表");
+                const message = isEnglish 
+                    ? "Redirecting to your portal..." 
+                    : "即將進入個人頁面";
+                alert(message);
                 window.open(googleSheetURL, "_blank");
             } else {
-                alert("找不到該電話號碼的連結，請確認是否正確輸入！");
+                const message = isEnglish 
+                    ? "Phone number not found. Please check if you entered correctly!" 
+                    : "找不到該電話號碼的連結，請確認是否正確輸入！";
+                alert(message);
             }
             return false;
         }
         
-        // 初始化 CSV 加載
-        window.addEventListener('load', loadCSV);
+        // 頁面載入時初始化
+        window.addEventListener('load', function() {
+            // 載入 CSV
+            loadCSV();
+            
+            // 讀取語言偏好
+            const savedLang = localStorage.getItem('preferred-language');
+            if (savedLang) {
+                setLanguage(savedLang);
+            }
+        });
     </script>
 </body>
 </html>
